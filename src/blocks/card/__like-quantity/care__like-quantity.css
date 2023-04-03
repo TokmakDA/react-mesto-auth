@@ -1,0 +1,12 @@
+.care__like-quantity {
+  max-width: 62px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  color: #000;
+  margin: 3px auto 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
