@@ -1,0 +1,6 @@
+.header__user-menu {
+  display: flex;
+  column-gap: 24px;
+  margin: 0;
+  padding: 0;
+}

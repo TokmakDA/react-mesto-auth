@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import '../index.css';
 import Header from './Header';
@@ -12,6 +13,10 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import CardDeletePopup from './DeleteCardPopup';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
+import Login from './Login';
+import auth from '../utils/Auth';
 
 function App() {
   // Стейты состояния открытия попапов
@@ -28,6 +33,12 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   // Стейт ожидания загрузки
   const [isLoading, setLoading] = useState(false);
+
+  const [isLoggedIn, setLoggedIn] = useState(false);
+
+  const navigate = useNavigate();
+  const [account, setAccount] = useState('');
+  const [errorMessage, setErrorMessage] = useState(null);
 
   // Получаем первичные данные
   useEffect(() => {
@@ -145,21 +156,104 @@ function App() {
       .finally(() => setLoading(false));
   }
 
+  useEffect(() => {
+    localStorage.getItem('jwt') ? setLoggedIn(true) : setLoggedIn(false);
+  }, [localStorage.getItem('jwt')]);
+
+  useEffect(() => {
+    auth
+      .getContent(localStorage.getItem('jwt'))
+      .then((res) => {
+        setAccount(res?.data?.email);
+        console.log(res?.data?.email);
+        // setLoggedIn(true);
+      })
+      .then(() => {})
+      .catch((err) => console.log(err));
+  }, [isLoggedIn]);
+
+  const cbLogin = ({ email, password }) => {
+    console.log({ email, password });
+    auth
+      .authorize({ email, password })
+      .then((res) => {
+        res.token && localStorage.setItem('jwt', res.token);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoggedIn(true);
+        navigate('/');
+      });
+  };
+
+  const cbRegister = ({ email, password }) => {
+    console.log({ email, password });
+    auth
+      .register({ email, password })
+      .then((res) => {
+        console.log(res);
+        // if (res.message) {
+        //   console.log(res.message);
+        // }
+        // if (res.error) {
+        //   console.log(res.error);
+        // }
+        // if (res.data) {
+        //   console.log(res.data);
+        // } else {
+        //   console.log(`Другое`);
+        // }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => navigate('../sign-in'));
+  };
+
+  const cbLogOut = () => {
+    localStorage.removeItem('jwt');
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="App">
-        <Header />
-
-        <Main
-          cards={currentCards}
-          onEditAvatar={() => handleEditAvatarClick()}
-          onEditProfile={() => handleEditProfileClick()}
-          onAddPlace={() => handleAddPlaceClick()}
-          onCardClick={handleCardClick}
-          onCardLike={(card) => handleCardLike(card)}
-          onCardDelete={(card) => handleCardDeleteClick(card)}
-        />
-
+      <>
+        <Header logOut={cbLogOut} account={account} isLoggedIn={isLoggedIn} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute
+                isLoggedIn={isLoggedIn}
+                element={Main}
+                cards={currentCards}
+                onEditAvatar={() => handleEditAvatarClick()}
+                onEditProfile={() => handleEditProfileClick()}
+                onAddPlace={() => handleAddPlaceClick()}
+                onCardClick={handleCardClick}
+                onCardLike={(card) => handleCardLike(card)}
+                onCardDelete={(card) => handleCardDeleteClick(card)}
+              />
+            }
+          />
+          <Route
+            path="/sign-up"
+            element={
+              <Register
+                isLoggedIn={isLoggedIn}
+                onRegister={cbRegister}
+                replace
+              />
+            }
+          />
+          <Route
+            path="/sign-in"
+            element={
+              <Login isLoggedIn={isLoggedIn} onLogin={cbLogin} replace />
+            }
+          />
+        </Routes>
         <Footer />
 
         <EditAvatarPopup
@@ -196,7 +290,7 @@ function App() {
           isLoading={isLoading}
           card={currentCard}
         />
-      </div>
+      </>
     </CurrentUserContext.Provider>
   );
 }

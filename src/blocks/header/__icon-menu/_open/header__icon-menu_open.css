@@ -1,0 +1,5 @@
+.header__icon-menu_open {
+  background-image: cover url(../../../../images/open-menu-icon.svg);
+  width: 24px;
+  height: 24px;
+}
