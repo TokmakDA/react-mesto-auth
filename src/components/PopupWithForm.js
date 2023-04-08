@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Loading from './Loading';
 
 function PopupWithForm({
   name,
@@ -24,7 +23,6 @@ function PopupWithForm({
 
   return (
     <div className={`popup popup_${name} ${isOpen && 'popup_is-opened'}`}>
-      {isLoading && <Loading />}
       <div className="popup__container">
         <button
           className="popup__close"

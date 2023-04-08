@@ -18,6 +18,7 @@ import Register from './Register';
 import Login from './Login';
 import auth from '../utils/Auth';
 import InfoTooltip from './InfoTooltip';
+import Loading from './Loading';
 
 function App() {
   // Стейты состояния открытия попапов
@@ -26,7 +27,9 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isImagePopupOpen, setImagePopupOpen] = useState(false);
   const [isCardDeletePopupOpen, setCardDeletePopupOpen] = useState(false);
-  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(true);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
+
+  const [isInfoTooltip, setInfoTooltip] = useState(false);
 
   // Стейт массива карточек
   const [currentCards, setCurrentCards] = useState([]);
@@ -88,7 +91,7 @@ function App() {
     // setSelectedCard(null);
     closseImagepopup();
     setCardDeletePopupOpen(false);
-    setInfoTooltipOpen(false)
+    setInfoTooltipOpen(false);
   }
 
   // сохраняем введенные данные пользователя в Api
@@ -177,47 +180,51 @@ function App() {
   }, [isLoggedIn]);
 
   const cbLogin = ({ email, password }) => {
+    setLoading(true);
     console.log({ email, password });
     auth
       .authorize({ email, password })
       .then((res) => {
         res.token && localStorage.setItem('jwt', res.token);
+        navigate('/');
+        setLoading(false);
+        setLoggedIn(true);
+
       })
       .catch((err) => {
         console.log(err);
+        setInfoTooltipOpen(true);
+        setInfoTooltip(false);
+        setLoading(false);
       })
       .finally(() => {
-        setLoggedIn(true);
-        navigate('/');
       });
   };
 
   const cbRegister = ({ email, password }) => {
+    setLoading(true);
     console.log({ email, password });
     auth
       .register({ email, password })
       .then((res) => {
         console.log(res);
-        // if (res.message) {
-        //   console.log(res.message);
-        // }
-        // if (res.error) {
-        //   console.log(res.error);
-        // }
-        // if (res.data) {
-        //   console.log(res.data);
-        // } else {
-        //   console.log(`Другое`);
-        // }
+        setInfoTooltipOpen(true);
+        setInfoTooltip(true);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setInfoTooltipOpen(true);
+        setInfoTooltip(false);
+        setLoading(false);
       })
-      .finally(() => navigate('../sign-in'));
+      .finally(() => {});
   };
 
   const cbLogOut = () => {
     localStorage.removeItem('jwt');
+    navigate('/sign-in');
+
   };
 
   return (
@@ -228,21 +235,22 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute
-                isLoggedIn={isLoggedIn}
-                element={Main}
-                cards={currentCards}
-                onEditAvatar={() => handleEditAvatarClick()}
-                onEditProfile={() => handleEditProfileClick()}
-                onAddPlace={() => handleAddPlaceClick()}
-                onCardClick={handleCardClick}
-                onCardLike={(card) => handleCardLike(card)}
-                onCardDelete={(card) => handleCardDeleteClick(card)}
-              />
+              <ProtectedRoute isLoggedIn={isLoggedIn}>
+                <Main
+                  cards={currentCards}
+                  onEditAvatar={() => handleEditAvatarClick()}
+                  onEditProfile={() => handleEditProfileClick()}
+                  onAddPlace={() => handleAddPlaceClick()}
+                  onCardClick={handleCardClick}
+                  onCardLike={(card) => handleCardLike(card)}
+                  onCardDelete={(card) => handleCardDeleteClick(card)}
+                />
+                <Footer />
+              </ProtectedRoute>
             }
           />
           <Route
-            path="/sign-up"
+            path="sign-up"
             element={
               <Register
                 isLoggedIn={isLoggedIn}
@@ -252,13 +260,12 @@ function App() {
             }
           />
           <Route
-            path="/sign-in"
+            path="sign-in"
             element={
               <Login isLoggedIn={isLoggedIn} onLogin={cbLogin} replace />
             }
           />
         </Routes>
-        <Footer />
 
         <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
@@ -298,7 +305,10 @@ function App() {
         <InfoTooltip
           isOpen={isInfoTooltipOpen}
           onClose={closeAllPopups}
+          isInfoTooltip={isInfoTooltip}
         />
+
+        <Loading isLoading={isLoading} />
       </>
     </CurrentUserContext.Provider>
   );

@@ -26,7 +26,7 @@ const  Login = ({ isLoggedIn, onLogin }) => {
 
   return (
     <div className=''>
-      <div className="popup__spinner">
+      <div className="spinner">
         <i></i>
       </div>
       <form className="form" name="new-card-form" onSubmit={handleSubmit}>

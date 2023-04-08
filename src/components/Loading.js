@@ -1,8 +1,8 @@
 import React from 'react';
 
-function Loading() {
+function Loading({isLoading}) {
   return (
-    <div className="popup__spinner popup__spinner_visible">
+    <div className={`spinner ${isLoading && 'spinner_visible'}`}>
       <i></i>
     </div>
   );

@@ -1,6 +1,6 @@
 .header__icon-menu {
   transition: 0.3s;
-  background: #fff;
+  border: none;
 }
 .header__icon-menu:hover {
   opacity: 0.6;

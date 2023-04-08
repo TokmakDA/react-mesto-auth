@@ -12,7 +12,7 @@
 @import url(./blocks/header/__icon-menu/_close/header__icon-menu_close.css);
 @import url(./blocks/header/__icon-menu/_open/header__icon-menu_open.css);
 @import url(./blocks/header/__link/header__link.css);
-@import url(./blocks/header/__link/_exit/header__link_exit.css);
+@import url(./blocks/header/__button-exit/header__button-exit.css);
 @import url(./blocks/header/__nav-bar/header__nav-bar.css);
 @import url(./blocks/header/__user-info/header__user-info.css);
 @import url(./blocks/header/__user-menu/header__user-menu.css);
@@ -64,8 +64,6 @@
 
 /* Popup */
 @import url(./blocks/popup/popup.css);
-@import url(./blocks/popup/__spinner/popup__spinner.css);
-@import url(./blocks/popup/__spinner/_visible/popup__spinner_visible.css);
 @import url(./blocks/popup/_profile-form/popup_profile-form.css);
 @import url(./blocks/popup/_profile-avatar-form/popup_profile-avatar-form.css);
 @import url(./blocks/popup/_card-form/popup_card-form.css);
@@ -93,7 +91,9 @@
 @import url(./blocks/popup/__tooltip-union/_ok/popup__tooltip-union_ok.css);
 @import url(./blocks/popup/__tooltip-text/popup__tooltip-text.css);
 
-
+/* Spinner */
+@import url(./blocks/spinner/spinner.css);
+@import url(./blocks/spinner/_visible/spinner_visible.css);
 
 /*
 *{

@@ -14,12 +14,5 @@
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  padding: 45px 0 56px;
-}
-
-@media screen and (max-width: 568px) {
-  .page {
-    padding-top: 28px;
-    padding-bottom: 33px;
-  }
+  padding: 0;
 }
