@@ -86,6 +86,14 @@
 @import url(./blocks/popup/__image/popup__image.css);
 @import url(./blocks/popup/__title-image/popup__title-image.css);
 
+@import url(./blocks/popup/_info-tooltip/popup__info-tooltip.css);
+@import url(./blocks/popup/__tooltip/popup__tooltip.css);
+@import url(./blocks/popup/__tooltip-union/popup__tooltip-union.css);
+@import url(./blocks/popup/__tooltip-union/_error/popup__tooltip-union_error.css);
+@import url(./blocks/popup/__tooltip-union/_ok/popup__tooltip-union_ok.css);
+@import url(./blocks/popup/__tooltip-text/popup__tooltip-text.css);
+
+
 
 /*
 *{

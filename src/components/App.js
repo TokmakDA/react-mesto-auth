@@ -17,6 +17,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
 import Login from './Login';
 import auth from '../utils/Auth';
+import InfoTooltip from './InfoTooltip';
 
 function App() {
   // Стейты состояния открытия попапов
@@ -25,6 +26,8 @@ function App() {
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = useState(false);
   const [isImagePopupOpen, setImagePopupOpen] = useState(false);
   const [isCardDeletePopupOpen, setCardDeletePopupOpen] = useState(false);
+  const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(true);
+
   // Стейт массива карточек
   const [currentCards, setCurrentCards] = useState([]);
   // Стейт карточки для удаления
@@ -85,6 +88,7 @@ function App() {
     // setSelectedCard(null);
     closseImagepopup();
     setCardDeletePopupOpen(false);
+    setInfoTooltipOpen(false)
   }
 
   // сохраняем введенные данные пользователя в Api
@@ -289,6 +293,11 @@ function App() {
           onCardDelete={(card) => handleCardDeleteSubmit(card)}
           isLoading={isLoading}
           card={currentCard}
+        />
+
+        <InfoTooltip
+          isOpen={isInfoTooltipOpen}
+          onClose={closeAllPopups}
         />
       </>
     </CurrentUserContext.Provider>
