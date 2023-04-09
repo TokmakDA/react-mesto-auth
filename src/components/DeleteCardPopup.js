@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PopupWithForm from './PopupWithForm';
 
 function CardDeletePopup({isOpen, onClose, isLoading, onCardDelete, card}) {
@@ -9,11 +9,6 @@ function CardDeletePopup({isOpen, onClose, isLoading, onCardDelete, card}) {
     // Передаём значения во внешний обработчик
     onCardDelete(card);
   }
-
-  useEffect(()=>{
-    
-  }, [isOpen === false])
-
   
   return (
     <PopupWithForm

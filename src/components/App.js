@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 
 import '../index.css';
 import Header from './Header';
@@ -87,14 +87,14 @@ function App() {
   }
 
   // Отбработчик закрытия попапов
-  const closeAllPopups = useCallback( () =>{
+  const closeAllPopups = useCallback(() => {
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
     closseImagepopup();
     setCardDeletePopupOpen(false);
     setInfoTooltipOpen(false);
-  }, [])
+  }, []);
 
   // Закрытие попапов нажатием на Escape
   useEffect(() => {
@@ -123,7 +123,7 @@ function App() {
     isImagePopupOpen,
     isCardDeletePopupOpen,
     isInfoTooltipOpen,
-    closeAllPopups
+    closeAllPopups,
   ]);
 
   // сохраняем введенные данные пользователя в Api
@@ -197,7 +197,7 @@ function App() {
 
   const cbTokenCheck = useCallback(async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       let jwt = localStorage.getItem('jwt');
       if (!jwt) {
         throw new Error('Ошибка, нет токена');
@@ -205,20 +205,19 @@ function App() {
       const userAccaunt = await auth.getContent(jwt);
       if (userAccaunt) {
         setAccount(userAccaunt.data);
-        setLoggedIn(true)
-        navigate('/')
+        setLoggedIn(true);
+        navigate('/');
       }
     } catch {
-      setLoggedIn(false)
+      setLoggedIn(false);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }, [navigate]);
-  
+
   useEffect(() => {
     cbTokenCheck();
   }, [cbTokenCheck]);
-
 
   const cbLogin = ({ email, password }) => {
     setLoading(true);
@@ -273,7 +272,7 @@ function App() {
         />
         <Routes>
           <Route
-            path="/"
+            path="*"
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Main
@@ -290,7 +289,7 @@ function App() {
             }
           />
           <Route
-            path="sign-up"
+            path="/sign-up"
             element={
               <Register
                 isLoggedIn={isLoggedIn}
@@ -300,7 +299,7 @@ function App() {
             }
           />
           <Route
-            path="sign-in"
+            path="/sign-in"
             element={
               <Login isLoggedIn={isLoggedIn} onLogin={cbLogin} replace />
             }
