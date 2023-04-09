@@ -272,7 +272,8 @@ function App() {
         />
         <Routes>
           <Route
-            path="*"
+            index
+            path="/"
             element={
               <ProtectedRoute isLoggedIn={isLoggedIn}>
                 <Main
