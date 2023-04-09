@@ -1,13 +1,23 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 const InfoTooltip = ({ isOpen, onClose, isInfoTooltip }) => {
   const info = {
     ok: 'Вы успешно зарегистрировались!',
     fail: 'Что-то пошло не так! Попробуйте ещё раз.',
   };
+  const modalRef = useRef();
+
+  function checkIsClickedOutside(e) {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      onClose();
+    }
+  }
   return (
-    <div className={`popup popup_info-tooltip ${isOpen && 'popup_is-opened'}`}>
-      <div className="popup__container">
+    <div
+      className={`popup popup_info-tooltip ${isOpen && 'popup_is-opened'}`}
+      onClick={checkIsClickedOutside}
+    >
+      <div className="popup__container" ref={modalRef}>
         <button
           className="popup__close"
           onClick={onClose}

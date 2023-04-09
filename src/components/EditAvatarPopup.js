@@ -12,7 +12,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
   }
   useEffect(() => {
     // сбрасываем инпуты
-    avatarRef.current.value =''
+    avatarRef.current.value = '';
   }, [isOpen]);
 
   return (
@@ -31,7 +31,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
           id="profile-avatar-link"
           type="url"
           placeholder="Введите ссылку на аватарку"
-          defaultValue=''
+          defaultValue=""
           ref={avatarRef} // отказался бы от рефа тут, но он тут по заданию
           name="profileAvatarLink"
           required

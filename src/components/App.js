@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import '../index.css';
@@ -29,6 +29,7 @@ function App() {
   const [isCardDeletePopupOpen, setCardDeletePopupOpen] = useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
 
+  // Стейт результат обработки api Auth: OK=true, error=false
   const [isInfoTooltip, setInfoTooltip] = useState(false);
 
   // Стейт массива карточек
@@ -40,11 +41,13 @@ function App() {
   // Стейт ожидания загрузки
   const [isLoading, setLoading] = useState(false);
 
+  // Стейт авторизации на сайте
   const [isLoggedIn, setLoggedIn] = useState(false);
 
-  const navigate = useNavigate();
+  // Стейт информация об аккаунте
   const [account, setAccount] = useState('');
-  const [errorMessage, setErrorMessage] = useState(null);
+
+  const navigate = useNavigate();
 
   // Получаем первичные данные
   useEffect(() => {
@@ -84,15 +87,44 @@ function App() {
   }
 
   // Отбработчик закрытия попапов
-  function closeAllPopups() {
+  const closeAllPopups = useCallback( () =>{
     setEditAvatarPopupOpen(false);
     setEditProfilePopupOpen(false);
     setAddPlacePopupOpen(false);
-    // setSelectedCard(null);
     closseImagepopup();
     setCardDeletePopupOpen(false);
     setInfoTooltipOpen(false);
-  }
+  }, [])
+
+  // Закрытие попапов нажатием на Escape
+  useEffect(() => {
+    if (
+      isEditAvatarPopupOpen ||
+      isEditProfilePopupOpen ||
+      isAddPlacePopupOpen ||
+      isImagePopupOpen ||
+      isCardDeletePopupOpen ||
+      isInfoTooltipOpen
+    ) {
+      document.addEventListener('keydown', handleEscapeKey);
+    }
+    function handleEscapeKey(e) {
+      if (e.code === 'Escape') {
+        closeAllPopups();
+        console.log('Escape');
+      }
+    }
+
+    return () => document.removeEventListener('keydown', handleEscapeKey);
+  }, [
+    isEditAvatarPopupOpen,
+    isEditProfilePopupOpen,
+    isAddPlacePopupOpen,
+    isImagePopupOpen,
+    isCardDeletePopupOpen,
+    isInfoTooltipOpen,
+    closeAllPopups
+  ]);
 
   // сохраняем введенные данные пользователя в Api
   function handleUpdateUser(dataUser) {
@@ -163,74 +195,82 @@ function App() {
       .finally(() => setLoading(false));
   }
 
+  const cbTokenCheck = useCallback(async () => {
+    try {
+      setLoading(true)
+      let jwt = localStorage.getItem('jwt');
+      if (!jwt) {
+        throw new Error('Ошибка, нет токена');
+      }
+      const userAccaunt = await auth.getContent(jwt);
+      if (userAccaunt) {
+        setAccount(userAccaunt.data);
+        setLoggedIn(true)
+        navigate('/')
+      }
+    } catch {
+      setLoggedIn(false)
+    } finally {
+      setLoading(false)
+    }
+  }, [navigate]);
+  
   useEffect(() => {
-    localStorage.getItem('jwt') ? setLoggedIn(true) : setLoggedIn(false);
-  }, [localStorage.getItem('jwt')]);
+    cbTokenCheck();
+  }, [cbTokenCheck]);
 
-  useEffect(() => {
-    auth
-      .getContent(localStorage.getItem('jwt'))
-      .then((res) => {
-        setAccount(res?.data?.email);
-        console.log(res?.data?.email);
-        // setLoggedIn(true);
-      })
-      .then(() => {})
-      .catch((err) => console.log(err));
-  }, [isLoggedIn]);
 
   const cbLogin = ({ email, password }) => {
     setLoading(true);
-    console.log({ email, password });
     auth
       .authorize({ email, password })
       .then((res) => {
         res.token && localStorage.setItem('jwt', res.token);
         navigate('/');
-        setLoading(false);
         setLoggedIn(true);
-
       })
       .catch((err) => {
         console.log(err);
         setInfoTooltipOpen(true);
         setInfoTooltip(false);
-        setLoading(false);
       })
       .finally(() => {
+        setLoading(false);
       });
   };
 
   const cbRegister = ({ email, password }) => {
     setLoading(true);
-    console.log({ email, password });
     auth
       .register({ email, password })
       .then((res) => {
         console.log(res);
         setInfoTooltipOpen(true);
         setInfoTooltip(true);
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setInfoTooltipOpen(true);
         setInfoTooltip(false);
-        setLoading(false);
       })
-      .finally(() => {});
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const cbLogOut = () => {
     localStorage.removeItem('jwt');
     navigate('/sign-in');
-
   };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <>
-        <Header logOut={cbLogOut} account={account} isLoggedIn={isLoggedIn} />
+        <Header
+          logOut={cbLogOut}
+          account={account.email}
+          isLoggedIn={isLoggedIn}
+        />
         <Routes>
           <Route
             path="/"

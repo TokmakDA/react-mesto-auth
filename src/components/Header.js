@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import logo from './../images/mesto-logo-white.svg';
 import { Link, useLocation } from 'react-router-dom';
 import UserBar from './UserBar';
-import { useResize } from '../utils/use-resize';
+import { useResize } from '../utils/useResize';
 
 function Header({ account, logOut, isLoggedIn }) {
   const location = useLocation();
   const [isUserBarOpen, setUserBarOpen] = useState(false);
 
-  console.log(isLoggedIn);
-
-  const {isScreen} = useResize();
+  const { isScreen } = useResize();
 
   const handleClickIcon = () => {
     if (isUserBarOpen) {

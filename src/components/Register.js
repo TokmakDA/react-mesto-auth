@@ -40,6 +40,7 @@ const Register = ({ isLoggedIn, onRegister }) => {
             value={userData.email}
             onChange={handleChange}
             name="email"
+            maxLength="100"
             required
           />
           <span id="email-error" className="form__error"></span>
@@ -51,6 +52,7 @@ const Register = ({ isLoggedIn, onRegister }) => {
             value={userData.password}
             onChange={handleChange}
             name="password"
+            maxLength="100"
             required
           />
           <span id="password-error" className="form__error"></span>
@@ -58,8 +60,9 @@ const Register = ({ isLoggedIn, onRegister }) => {
         <button type="submit" className="form__button">
           {'Зарегистрироваться'}
         </button>
-        <Link className='form__link' to="../sign-in">Уже зарегистрированы? Войти</Link>
-
+        <Link className="form__link" to="../sign-in">
+          Уже зарегистрированы? Войти
+        </Link>
       </form>
     </div>
   );

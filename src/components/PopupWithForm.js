@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function PopupWithForm({
   name,
@@ -21,9 +21,20 @@ function PopupWithForm({
     [isLoading, button]
   );
 
+  const modalRef = useRef();
+
+  function checkIsClickedOutside(e) {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      onClose();
+    }
+  }
+
   return (
-    <div className={`popup popup_${name} ${isOpen && 'popup_is-opened'}`}>
-      <div className="popup__container">
+    <div
+      className={`popup popup_${name} ${isOpen && 'popup_is-opened'}`}
+      onClick={checkIsClickedOutside}
+    >
+      <div className="popup__container" ref={modalRef}>
         <button
           className="popup__close"
           onClick={onClose}
@@ -35,11 +46,9 @@ function PopupWithForm({
           {/* Инпуты */}
           {children}
 
-          <button
-            className="popup__button"
-            type="submit"
-            required
-          >{currentButton}</button>
+          <button className="popup__button" type="submit" required>
+            {currentButton}
+          </button>
         </form>
       </div>
     </div>
