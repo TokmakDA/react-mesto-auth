@@ -20,7 +20,7 @@ function Header({ account, logOut, isLoggedIn }) {
 
   return (
     <>
-      {isUserBarOpen && !isScreen && (
+      {isLoggedIn && isUserBarOpen && !isScreen && (
         <UserBar logOut={logOut} account={account} />
       )}
       <header className="header">
