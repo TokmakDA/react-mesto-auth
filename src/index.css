@@ -64,11 +64,11 @@
 
 /* Popup */
 @import url(./blocks/popup/popup.css);
-@import url(./blocks/popup/_profile-form/popup_profile-form.css);
-@import url(./blocks/popup/_profile-avatar-form/popup_profile-avatar-form.css);
-@import url(./blocks/popup/_card-form/popup_card-form.css);
-@import url(./blocks/popup/_delete-card-form/popup_delete-card-form.css);
-@import url(./blocks/popup/_card-image/popup_card-image.css);
+@import url(./blocks/popup/_type/popup_type_card-form.css);
+@import url(./blocks/popup/_type/popup_type_card-image.css);
+@import url(./blocks/popup/_type/popup_type_delete-card-form.css);
+@import url(./blocks/popup/_type/popup_type_profile-avatar-form.css);
+@import url(./blocks/popup/_type/popup_type_profile-form.css);
 @import url(./blocks/popup/_is-opened/popup_is-opened.css);
 @import url(./blocks/popup/__container/popup__container.css);
 @import url(./blocks/popup/__form/popup__form.css);
@@ -84,7 +84,7 @@
 @import url(./blocks/popup/__image/popup__image.css);
 @import url(./blocks/popup/__title-image/popup__title-image.css);
 
-@import url(./blocks/popup/_info-tooltip/popup__info-tooltip.css);
+@import url(./blocks/popup/_type/popup_type_info-tooltip.css);
 @import url(./blocks/popup/__tooltip/popup__tooltip.css);
 @import url(./blocks/popup/__tooltip-union/popup__tooltip-union.css);
 @import url(./blocks/popup/__tooltip-union/_error/popup__tooltip-union_error.css);

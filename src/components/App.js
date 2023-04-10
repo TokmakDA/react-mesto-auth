@@ -104,21 +104,6 @@ function App() {
     setInfoTooltipOpen(false);
   }, []);
 
-  // Закрытие попапов нажатием на Escape
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscapeKey);
-    }
-    function handleEscapeKey(e) {
-      if (e.code === 'Escape') {
-        closeAllPopups();
-        console.log('Escape');
-      }
-    }
-
-    return () => document.removeEventListener('keydown', handleEscapeKey);
-  }, [isOpen, closeAllPopups]);
-
   // сохраняем введенные данные пользователя в Api
   function handleUpdateUser(dataUser) {
     setLoading(true);
@@ -326,7 +311,7 @@ function App() {
       />
 
       <ImagePopup
-        {...currentCard}
+        card={currentCard}
         isOpen={isImagePopupOpen}
         onClose={closeAllPopups}
       />
