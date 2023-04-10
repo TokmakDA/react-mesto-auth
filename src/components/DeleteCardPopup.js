@@ -17,7 +17,7 @@ function CardDeletePopup({isOpen, onClose, isLoading, onCardDelete, card}) {
       button={'Да'}
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={(e) => handleSubmit(e)}
+      onSubmit={handleSubmit}
       isLoading={isLoading}
     />
   );

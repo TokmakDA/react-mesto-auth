@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import PopupWithForm from './PopupWithForm';
+import { useForm } from '../hooks/useForm';
 
 function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
-  const [values, setValues] = useState({ name: '', about: '' });
+  const { values, handleChange, setValues } = useForm();
 
   // Подписка на контекст
   const currentUser = useContext(CurrentUserContext);
@@ -19,7 +20,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
     e.preventDefault();
-
     // Передаём значения управляемых компонентов во внешний обработчик
     onUpdateUser(values);
   }
@@ -31,7 +31,7 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
       button={'Сохранить'}
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={(e) => handleSubmit(e)}
+      onSubmit={handleSubmit}
       isLoading={isLoading}
     >
       <fieldset className="popup__inputs">
@@ -39,9 +39,9 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
           className="popup__input"
           id="profile-name"
           placeholder="Имя"
-          value={values.name}
-          onChange={(e) => setValues({ ...values, name: e.target.value })}
-          name="profileName"
+          value={values?.name || ''}
+          onChange={handleChange}
+          name="name"
           minLength="2"
           maxLength="40"
           required
@@ -52,9 +52,9 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
           id="profile-job"
           type="text"
           placeholder="О себе"
-          value={values.about}
-          onChange={(e) => setValues({ ...values, about: e.target.value })}
-          name="profileJob"
+          value={values?.about || ''}
+          onChange={handleChange}
+          name="about"
           minLength="2"
           maxLength="200"
           required

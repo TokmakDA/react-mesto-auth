@@ -1,18 +1,20 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
+import { useForm } from '../hooks/useForm';
 
 function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
-  const avatarRef = useRef();
+  const { values, handleChange, setValues } = useForm();
+
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
     e.preventDefault();
-
     // Передаём значения управляемых компонентов во внешний обработчик
-    onUpdateAvatar(avatarRef.current.value);
+    onUpdateAvatar(values.avatar);
   }
+
   useEffect(() => {
     // сбрасываем инпуты
-    avatarRef.current.value = '';
+    setValues({ ...values, avatar: '' });
   }, [isOpen]);
 
   return (
@@ -22,7 +24,7 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
       button={'Сохранить'}
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={(e) => handleSubmit(e)}
+      onSubmit={handleSubmit}
       isLoading={isLoading}
     >
       <fieldset className="popup__inputs">
@@ -31,9 +33,9 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, isLoading }) {
           id="profile-avatar-link"
           type="url"
           placeholder="Введите ссылку на аватарку"
-          defaultValue=""
-          ref={avatarRef} // отказался бы от рефа тут, но он тут по заданию
-          name="profileAvatarLink"
+          value={values?.avatar || ''}
+          onChange={handleChange}
+          name="avatar"
           required
         />
         <span className="popup__error" id="profile-avatar-link-error"></span>

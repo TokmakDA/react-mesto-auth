@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import logo from './../images/mesto-logo-white.svg';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import UserBar from './UserBar';
-import { useResize } from '../utils/useResize';
+import { useResize } from '../hooks/useResize';
 
 function Header({ account, logOut, isLoggedIn }) {
-  const location = useLocation();
+  // const location = useLocation();
   const [isUserBarOpen, setUserBarOpen] = useState(false);
 
   const { isScreen } = useResize();
@@ -26,7 +26,41 @@ function Header({ account, logOut, isLoggedIn }) {
       <header className="header">
         <img className="header__logo" src={logo} alt="Логотип" />
         <nav className="header__nav-bar">
-          {isLoggedIn &&
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={
+                !isScreen ? (
+                  <button
+                    className={`header__icon-menu header__icon-menu_${
+                      isUserBarOpen ? 'close' : 'open'
+                    }`}
+                    onClick={handleClickIcon}
+                  />
+                ) : (
+                  <UserBar logOut={logOut} account={account} />
+                )
+              }
+            />
+            <Route
+              path="/sign-up"
+              element={
+                <Link to="/sign-in" className="header__link">
+                  Войти
+                </Link>
+              }
+            />
+            <Route
+              path="/sign-in"
+              element={
+                <Link to="/sign-up" className="header__link">
+                  Регистрация
+                </Link>
+              }
+            />
+          </Routes>
+          {/* {isLoggedIn &&
             (!isScreen ? (
               <button
                 className={`header__icon-menu header__icon-menu_${
@@ -38,15 +72,15 @@ function Header({ account, logOut, isLoggedIn }) {
               <UserBar logOut={logOut} account={account} />
             ))}
           {location.pathname === '/sign-up' && (
-            <Link to="../sign-in" className="header__link">
+            <Link to="sign-in" className="header__link">
               Войти
             </Link>
           )}
           {location.pathname === '/sign-in' && (
-            <Link to="../sign-up" className="header__link">
+            <Link to="sign-up" className="header__link">
               Регистрация
             </Link>
-          )}
+          )} */}
         </nav>
       </header>
     </>

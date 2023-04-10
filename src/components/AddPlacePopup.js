@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
+import { useForm } from '../hooks/useForm';
 
 function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
-  const [values, setValues] = useState({ name: '', link: '' });
+  const { values, handleChange, setValues } = useForm();
 
   function handleSubmit(e) {
     // Запрещаем браузеру переходить по адресу формы
     e.preventDefault();
-
     // Передаём значения управляемых компонентов во внешний обработчик
     onAddPlace(values);
-
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     // сбрасываем инпуты
     setValues({ ...values, name: '', link: '' });
-  }, [isOpen])
-
+  }, [isOpen]);
 
   return (
     <PopupWithForm
@@ -26,7 +24,7 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
       button={'Сохранить'}
       isOpen={isOpen}
       onClose={onClose}
-      onSubmit={(e) => handleSubmit(e)}
+      onSubmit={handleSubmit}
       isLoading={isLoading}
     >
       <fieldset className="popup__inputs">
@@ -35,9 +33,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
           id="place-image-name"
           type="text"
           placeholder="Название"
-          value={values.name}
-          onChange={(e) => setValues({ ...values, name: e.target.value })}
-          name="placeImageName"
+          value={values?.name || ''}
+          onChange={handleChange}
+          name="name"
           minLength="2"
           maxLength="30"
           required
@@ -48,9 +46,9 @@ function AddPlacePopup({ isOpen, onClose, onAddPlace, isLoading }) {
           id="place-image-link"
           type="url"
           placeholder="Ссылка на картинку"
-          value={values.link}
-          onChange={(e) => setValues({ ...values, link: e.target.value })}
-          name="placeImageLink"
+          value={values?.link || ''}
+          onChange={handleChange}
+          name="link"
           required
         />
         <span className="popup__error" id="place-image-link-error"></span>
