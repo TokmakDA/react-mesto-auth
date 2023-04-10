@@ -61,7 +61,7 @@ const config = {
   headers: { 'Content-Type': 'application/json' },
   methods: { post: 'POST', get: 'GET' },
   endpoints: {
-    reg: '/sign-up',
+    reg: '/signup',
     login: '/signin',
     check: '/users/me',
   },
