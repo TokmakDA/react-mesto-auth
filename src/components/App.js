@@ -29,14 +29,6 @@ function App() {
   const [isCardDeletePopupOpen, setCardDeletePopupOpen] = useState(false);
   const [isInfoTooltipOpen, setInfoTooltipOpen] = useState(false);
 
-  const isOpen =
-    isEditAvatarPopupOpen ||
-    isEditProfilePopupOpen ||
-    isAddPlacePopupOpen ||
-    isImagePopupOpen ||
-    isCardDeletePopupOpen ||
-    isInfoTooltipOpen;
-
   // Стейт результат обработки api Auth: OK=true, error=false
   const [isInfoTooltip, setInfoTooltip] = useState(false);
 
