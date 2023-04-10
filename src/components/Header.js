@@ -60,27 +60,6 @@ function Header({ account, logOut, isLoggedIn }) {
               }
             />
           </Routes>
-          {/* {isLoggedIn &&
-            (!isScreen ? (
-              <button
-                className={`header__icon-menu header__icon-menu_${
-                  isUserBarOpen ? 'close' : 'open'
-                }`}
-                onClick={handleClickIcon}
-              />
-            ) : (
-              <UserBar logOut={logOut} account={account} />
-            ))}
-          {location.pathname === '/sign-up' && (
-            <Link to="sign-in" className="header__link">
-              Войти
-            </Link>
-          )}
-          {location.pathname === '/sign-in' && (
-            <Link to="sign-up" className="header__link">
-              Регистрация
-            </Link>
-          )} */}
         </nav>
       </header>
     </>
